@@ -24,79 +24,87 @@
 {%- endif -%}
 
 <style>
-     header-drawer {
-       justify-self: start;
-       margin-left: -1.2rem;
-     }
-    .custom-bg{
-     background-color:{{section.settings.bg_color}};
-     padding:20px ;
-    border-top-right-radius: 20px;
-    border-top-left-radius: 20px;
-    }
-    .custom-bg-background {
+           header-drawer {
+             justify-self: start;
+             margin-left: -1.2rem;
+           }
+          .custom-bg{
+            background-color:{{section.settings.bg_color}};
+            padding:20px;
+            transition:.4s;
+            border-top-right-radius: 20px;
+            border-top-left-radius: 20px;
+          }
+  .custom-bg-background {
       width: 100%;
-      height: 50px;
+      height: 20px;
       background-color: #fff;
-      display: block!important;
+      opacity: 0;
+      display: flex !important;
       position: fixed;
       top: 0;
       left: 0;
       z-index: 1;
-      transition:1s;
+      transition: all 1s cubic-bezier(1, 0, 0, 1);
   }
-     {%- if section.settings.sticky_header_type == 'reduce-logo-size' -%}
-       .scrolled-past-header .header__heading-logo-wrapper {
-         width: 75%;
-       }
-     {%- endif -%}
 
-     {%- if section.settings.menu_type_desktop != "drawer" -%}
-       @media screen and (min-width: 990px) {
-         header-drawer {
-           display: none;
-         }
-       }
-     {%- endif -%}
+  .custom-bg-background.active {
+      opacity: 1; /* Torna visível */
 
-     .menu-drawer-container {
-       display: flex;
-     }
+  }
 
-     .list-menu {
-       list-style: none;
-       padding: 0;
-       margin: 0;
-     }
+           {%- if section.settings.sticky_header_type == 'reduce-logo-size' -%}
+             .scrolled-past-header .header__heading-logo-wrapper {
+               width: 75%;
+             }
+           {%- endif -%}
 
-     .list-menu--inline {
-       display: inline-flex;
-       flex-wrap: wrap;
-     }
+           {%- if section.settings.menu_type_desktop != "drawer" -%}
+             @media screen and (min-width: 990px) {
+               header-drawer {
+                 display: none;
+               }
+             }
+           {%- endif -%}
 
-     summary.list-menu__item {
-       padding-right: 2.7rem;
-     }
+           .menu-drawer-container {
+             display: flex;
+           }
 
-     .list-menu__item {
-       display: flex;
-       align-items: center;
-       line-height: calc(1 + 0.3 / var(--font-body-scale));
-     }
+           .list-menu {
+             list-style: none;
+             padding: 0;
+             margin: 0;
+           }
 
-     .list-menu__item--link {
-       text-decoration: none;
-       padding-bottom: 1rem;
-       padding-top: 1rem;
-       line-height: calc(1 + 0.8 / var(--font-body-scale));
-     }
+           .list-menu--inline {
+             display: inline-flex;
+             flex-wrap: wrap;
+           }
 
-     @media screen and (min-width: 750px) {
-       .list-menu__item--link {
-         padding-bottom: 0.5rem;
-         padding-top: 0.5rem;
-       }
-     }
+           summary.list-menu__item {
+             padding-right: 2.7rem;
+           }
+
+           .list-menu__item {
+             display: flex;
+             align-items: center;
+             line-height: calc(1 + 0.3 / var(--font-body-scale));
+           }
+
+           .list-menu__item--link {
+             text-decoration: none;
+             padding-bottom: 1rem;
+             padding-top: 1rem;
+             line-height: calc(1 + 0.8 / var(--font-body-scale));
+           }
+
+           @media screen and (min-width: 750px) {
+             .list-menu__item--link {
+               padding-bottom: 0.5rem;
+               padding-top: 0.5rem;
+             }
+           }
 </style>
 
 {%- style -%}
@@ -110,6 +118,7 @@
     width:100%;
     max-width:98%;
     margin:0 auto;
+    transition: all .5s cubic-bezier(1, 0, 0, 1);
   }
 
   @media screen and (min-width: 750px) {
@@ -370,6 +379,8 @@
 
 {% javascript %}
   const newDiv = document.createElement('div');
+  newDiv.classList.add('custom-bg-background');
+
   class StickyHeader extends HTMLElement {
     constructor() {
       super();
@@ -377,6 +388,7 @@
 
     connectedCallback() {
       this.header = document.querySelector('.section-header');
+      this.header.parentNode.insertBefore(newDiv, this.header);
       this.headerIsAlwaysSticky =
         this.getAttribute('data-sticky-type') === 'always' ||
         this.getAttribute('data-sticky-type') === 'reduce-logo-size';
@@ -445,7 +457,7 @@
         }
       } else if (scrollTop <= this.headerBounds.top) {
         this.header.classList.remove('scrolled-past-header');
-        newDiv.classList.remove('custom-bg-background');
+        newDiv.classList.remove('active');
         requestAnimationFrame(this.reset.bind(this));
       }
 
@@ -454,7 +466,7 @@
 
     hide() {
       if (this.headerIsAlwaysSticky) return;
-      newDiv.classList.remove('custom-bg-background');
+      newDiv.classList.remove('active');
       this.header.classList.add('shopify-section-header-hidden', 'shopify-section-header-sticky');
       this.closeMenuDisclosure();
       this.closeSearchModal();
@@ -462,10 +474,9 @@
 
     reveal() {
       if (this.headerIsAlwaysSticky) return;
-      newDiv.classList.add('custom-bg-background');
-      this.header.parentNode.insertBefore(newDiv, this.header);
       this.header.classList.add('shopify-section-header-sticky', 'animate', 'custom-bg');
       this.header.classList.remove('shopify-section-header-hidden');
+      newDiv.classList.add('active');
     }
 
     reset() {
@@ -476,7 +487,7 @@
         'animate',
         'custom-bg'
       );
-      newDiv.classList.remove('custom-bg-background');
+      newDiv.classList.remove('active');
     }
 
     closeMenuDisclosure() {

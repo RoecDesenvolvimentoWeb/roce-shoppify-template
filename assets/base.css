@@ -2312,10 +2312,6 @@ input[type='checkbox'] {
   top: 0;
 }
 
-.section-header.animate {
-  transition: top 0.15s ease-out;
-}
-
 .shopify-section-group-header-group {
   z-index: 4;
 }
