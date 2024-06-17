@@ -14,11 +14,11 @@
             <details id="Details-HeaderMenu-{{ forloop.index }}" class="mega-menu">
               <summary
                 id="HeaderMenu-{{ link.handle }}"
-                class="header__menu-item list-menu__item link focus-inset"
+                class="header__menu-item list-menu__item link focus-inset text-2xl font-bold"
               >
                 <span
                   {%- if link.child_active %}
-                    class="header__active-menu-item"
+                    class="header__active-menu-item text-2xl font-bold"
                   {% endif %}
                 >
                   {{- link.title | escape -}}
@@ -27,11 +27,11 @@
               </summary>
               <div
                 id="MegaMenu-Content-{{ forloop.index }}"
-                class="mega-menu__content color-{{ section.settings.menu_color_scheme }} gradient motion-reduce global-settings-popup"
+                class="mega-menu__content color-{{ section.settings.menu_color_scheme }} gradient motion-reduce global-settings-popup flex items-start justify-between !shadow-none border-0"
                 tabindex="-1"
               >
                 <ul
-                  class="mega-menu__list page-width{% if link.levels == 1 %} mega-menu__list--condensed{% endif %}"
+                  class="mega-menu__list page-width{% if link.levels == 1 %} mega-menu__list--condensed{% endif %} !m-0 !w-fit"
                   role="list"
                 >
                   {%- for childlink in link.links -%}
@@ -67,6 +67,45 @@
                     </li>
                   {%- endfor -%}
                 </ul>
+                <div class="w-[85%]">
+                  {%- if forloop.index == 2 -%}
+                    <p class="text-5xl font-bold text-[#67645e] mb-5">
+                      {{ section.settings.category_product_title }}
+                    </p>
+                    <!-- Renderizar produtos do segundo item -->
+                    <ul>
+                      {% for product in section.settings.product_list %}
+                        <li>
+                          <a
+                            href="{{ product.url }}"
+                            class="block w-full max-w-[350px] h-[400px] relative"
+                            style="background-image:url({{ product.featured_image | img_url: 'large' }})"
+                          >
+                            <h2 class="absolute left-5 bottom-5 text-3xl font-bold">{{ product.title }}</h2>
+                          </a>
+                        </li>
+                      {% endfor %}
+                    </ul>
+                  {%- endif -%}
+
+                  {%- if forloop.index == 3 -%}
+                    <p class="text-5xl font-bold text-[#67645e] mb-5">
+                      {{ section.settings.category_coming_title }}
+                    </p>
+                    <!-- Renderizar produtos do terceiro item -->
+                    {% for product in section.settings.product_list_coming %}
+                      <li>
+                        <a
+                          href="{{ product.url }}"
+                          class="block w-full max-w-[350px] h-[400px] relative"
+                          style="background-image:url({{ product.featured_image | img_url: 'large' }})"
+                        >
+                          <h2 class="absolute left-5 bottom-5 text-3xl font-bold">{{ product.title }}</h2>
+                        </a>
+                      </li>
+                    {% endfor %}
+                  {%- endif -%}
+                </div>
               </div>
             </details>
           </header-menu>
@@ -74,14 +113,14 @@
           <a
             id="HeaderMenu-{{ link.handle }}"
             href="{{ link.url }}"
-            class="header__menu-item list-menu__item link link--text focus-inset"
+            class="header__menu-item list-menu__item link link--text focus-inset text-2xl font-bold"
             {% if link.current %}
               aria-current="page"
             {% endif %}
           >
             <span
               {%- if link.current %}
-                class="header__active-menu-item"
+                class="header__active-menu-item text-2xl font-bold"
               {% endif %}
             >
               {{- link.title | escape -}}

@@ -27,14 +27,28 @@
            header-drawer {
              justify-self: start;
              margin-left: -1.2rem;
+           }.mega-menu__content{
+             border-radius: 0 0 20px 20px;
+           }
+           .header.active .mega-menu__content{
+            background-color:{{section.settings.bg_color}};
+
+
            }
           .custom-bg{
             background-color:{{section.settings.bg_color}};
-            padding:20px;
             transition:.4s;
             border-top-right-radius: 20px;
             border-top-left-radius: 20px;
           }
+          .header{
+      transition: all 1s cubic-bezier(1, 0, 0, 1);
+
+          }
+          .header.active{
+            padding:0 20px!important;
+          }
+
   .custom-bg-background {
       width: 100%;
       height: 20px;
@@ -380,6 +394,7 @@
 {% javascript %}
   const newDiv = document.createElement('div');
   newDiv.classList.add('custom-bg-background');
+  const headerElement = document.querySelector('.header');
 
   class StickyHeader extends HTMLElement {
     constructor() {
@@ -475,6 +490,7 @@
     reveal() {
       if (this.headerIsAlwaysSticky) return;
       this.header.classList.add('shopify-section-header-sticky', 'animate', 'custom-bg');
+      headerElement.classList.add('active');
       this.header.classList.remove('shopify-section-header-hidden');
       newDiv.classList.add('active');
     }
@@ -487,6 +503,8 @@
         'animate',
         'custom-bg'
       );
+      headerElement.classList.remove('active');
+
       newDiv.classList.remove('active');
     }
 
@@ -555,6 +573,28 @@
       "id": "bg_color",
       "label": "Background color",
       "default": "#ffffff"
+    },
+    {
+      "type": "product_list",
+      "id": "product_list",
+      "label": "Select the products to show in second item"
+    },
+    {
+      "type": "text",
+      "id": "category_product_title",
+      "label": "Change the title of menu shelf",
+      "default": "KNOW OUR BEST SELLERS!"
+    },
+    {
+      "type": "product_list",
+      "id": "product_list_coming",
+      "label": "Select products to show in third item"
+    },
+    {
+      "type": "text",
+      "id": "category_coming_title",
+      "label": "Change the title of menu shelf",
+      "default": "IS COMING!"
     },
     {
       "type": "select",

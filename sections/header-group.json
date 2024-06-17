@@ -26,6 +26,13 @@
       "type": "header",
       "settings": {
         "bg_color": "#f1f0ed",
+        "product_list": [
+          "blush-tint"
+        ],
+        "category_product_title": "KNOW OUR BEST SELLER!",
+        "product_list_coming": [
+          "blush-tint"
+        ],
         "logo_position": "middle-center",
         "menu": "main-menu",
         "menu_type_desktop": "mega",
