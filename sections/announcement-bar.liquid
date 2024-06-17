@@ -1,0 +1,94 @@
+<div class="w-full max-w-[98%] mx-auto">
+  {% for block in section.blocks %}
+    <div class="py-5">
+      <div
+        class="{{section.settings.text_align}} {{section.settings.font_weight}} py-5 rounded-[20px]"
+        style="background-color: {{block.settings.bg_color}}; color:{{block.settings.text_color}}"
+      >
+        {{ block.settings.text }}
+      </div>
+    </div>
+  {% endfor %}
+</div>
+
+{% schema %}
+{
+  "name": "Annoucement Bar",
+  "max_blocks": 12,
+  "class": "announcement-bar-section",
+  "enabled_on": {
+    "groups": ["header"]
+  },
+  "settings": [
+    {
+      "type": "select",
+      "id": "text_align",
+      "label": "Text Alignment",
+      "options": [
+        {
+          "value": "text-left",
+          "label": "Text Left"
+        },
+        {
+          "value": "text-center",
+          "label": "Text Center"
+        },
+        {
+          "value": "text-right",
+          "label": "Text Right"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "font_weight",
+      "label": "Text Weight",
+      "options": [
+        {
+          "value": "font-normal",
+          "label": "Normal"
+        },
+        {
+          "value": "font-bold",
+          "label": "Bold"
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "announcement",
+      "name": "t:sections.announcement-bar.blocks.announcement.name",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text"
+        },
+        {
+          "type": "color",
+          "id": "bg_color",
+          "label": "Background color",
+          "default": "#fff"
+        },
+        {
+          "type": "color",
+          "id": "text_color",
+          "label": "Text Color",
+          "default": "#000"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.announcement-bar.presets.name",
+      "blocks": [
+        {
+          "type": "announcement"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
